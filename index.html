@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <title>小刘鸭</title>
+    <title>TIME BANK</title>
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0" />
     <meta name="apple-mobile-web-app-title" content="演示">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -12,44 +12,7 @@
 
 <body>
     <div class="wrap" id="wrap">
-        <div class="item item-1">
-            <div class="box">
-                <h1 class="hide">第一页</h1>
-                <div class="mod_container">
-                    <p class="sprite text_1"></p>
-                    <p class="sprite text_2"></p>
-                    <div class="sprite scene">
-                        <img src="img/item1.gif" width="300" />
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <div class="item item-2">
-            <div class="box">
-                <h1 class="hide">第二页</h1>
-                <div class="mod_container">
-                    <p class="sprite text_1"></p>
-                    <p class="sprite text_2"></p>
-                    <div class="sprite scene">
-                        <img src="img/item1.gif" width="300" />
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="item item-3">
-            <div class="box">
-                <h1 class="hide">第三页</h1>
-                <div class="mod_container">
-                    <p class="sprite text_1"></p>
-                    <p class="sprite text_2"></p>
-                    <div class="sprite scene">
-                        <img src="img/item1.gif" width="300" />
-                    </div>
-                </div>
-            </div>
-        </div>
 
     </div>
 
@@ -70,7 +33,7 @@
     </div>
     <!-- 加载提示 _E -->
     <audio id="audiojs" autoplay="" style="height:0;width:0;display:none" loop="loop">
-        <source src="sound/Happy_Time.mp3" type="audio/mp3" />
+        <source src="sound/Time.mp3" type="audio/mp3" />
     </audio>
     <!-- 播放状态 _S -->
     <!-- btn_pause为暂停状态 -->
@@ -90,16 +53,49 @@
     </div>
 
 </body>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript" src="lib/iSlider.js"></script>
 
 <script>
     //用法
     window.debug = true;
-    var myslider = new iSlider({
-        wrap: '#wrap',
-        item: '.item'
+    var timer;
+    $(function () {
+
+        var data = [
+        ];
+
+        for (var i = 1; i <= 26; i++) {
+            data.push({ url: 'img/p' + i + '.png', class: 'plain-img' });
+        }
+
+        for (var i = data.length - 1; i >= 0; i--) {
+            var item = data[i];
+            var template = `<div class="item item-1">
+            <div class="box">
+                <div class="mod_container">
+                    <div class="sprite scene">
+                        <img src="${item.url}" class="${item.class}" />
+                    </div>
+                </div>
+            </div>
+        </div>`;
+            $("#wrap").prepend($(template));
+        }
+
+
+
+        var myslider = new iSlider({
+            wrap: '#wrap',
+            item: '.item',
+            lastLocate: false
+        });
+        console.info(myslider)
+        timer = setInterval(function () {
+            myslider.next();
+        }, 5000);
+
     });
-    console.info(myslider)
 
     function playOrPauseMusic() {
         var audio = document.getElementById('audiojs');
@@ -133,6 +129,7 @@
     }
 
     document.body.addEventListener('touchmove', function (e) {
+        clearInterval(timer);
         e.preventDefault(); //阻止默认的处理方式(阻止下拉滑动的效果)
     }, { passive: false }); //passive 参数不能省略，用来兼容ios和android
 

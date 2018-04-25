@@ -84,18 +84,39 @@
         }
 
 
-
+        var currentIndex;
         var myslider = new iSlider({
             wrap: '#wrap',
             item: '.item',
-            lastLocate: false
+            lastLocate: false,
+            onslide: function (index) {
+                currentIndex = index;
+            }
         });
         console.info(myslider)
         timer = setInterval(function () {
-            myslider.next();
+            if (currentIndex != 25) {
+                myslider.next();
+            } else {
+                myslider.slideTo(0);
+            }
+
         }, 5000);
 
     });
+
+    function y_ipad() {
+        var ua = navigator.userAgent.toLowerCase();
+        var s;
+        s = ua.match(/iPad/i);
+
+        if (s == "ipad") {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 
     function playOrPauseMusic() {
         var audio = document.getElementById('audiojs');
